@@ -114,6 +114,22 @@
   .btn{display:block;width:100%;text-align:center;background:var(--ink);color:#fff;border:none;font:inherit;font-weight:700;font-size:14px;padding:14px;border-radius:11px;cursor:pointer;text-decoration:none}
   .btn.disabled{background:var(--bg-2);color:var(--ink-3);cursor:default;border:1px solid var(--line)}
   .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line-2);margin-top:8px}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--ink-2)}
+  .field input{width:100%;font:inherit;font-size:13px;padding:11px 12px;border:1px solid var(--line-2);border-radius:9px;background:#fff}
+  .field input:focus{outline:none;border-color:var(--key)}
+  .summary{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:4px 0 14px}
+  .summary .line{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--ink)}
+  .mini-book{display:flex;gap:10px;align-items:center;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .mini-book .mb-cover{width:42px;height:56px;border-radius:4px;background:linear-gradient(160deg,var(--cover-a),var(--cover-b))}
+  .mini-book .mb-t{font-size:13px;font-weight:600}
+  .mini-book .mb-s{font-size:11.5px;color:var(--ink-2)}
+  .account{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px;text-align:center}
+  .account .ac-l{font-size:11px;color:var(--ink-3);font-weight:700;margin-bottom:4px}
+  .account .ac-n{font-size:15px;font-weight:700;color:var(--ink)}
+  .account .ac-s{font-size:11px;color:var(--ink-2);margin-top:5px;line-height:1.5}
+  .ap-err{font-size:12px;color:#B43A2E;background:#FBEAE8;border:1px solid #F2C7C1;border-radius:9px;padding:9px 11px;margin-bottom:10px}
+  .ap-err a{color:#B43A2E;font-weight:600}
   @media(max-width:560px){
     .detail-top{flex-direction:column}.dcover{width:58%;margin:0 auto}
     .hero h1{font-size:21px}
@@ -245,7 +261,7 @@ function openDetail(id){
   var b = BOOKS.find(function(x){ return x.id===id; });
   if(!b) return;
   var cta;
-  if(b.st==='before') cta='<a class="btn" href="'+esc(CONFIG.FORM_URL)+'" target="_blank" rel="noopener">분양 신청하기 →</a>';
+  if(b.st==='before') cta='<button class="btn" onclick="openApply(\''+b.id+'\')">분양 신청하기 →</button>';
   else if(b.st==='ing') cta='<div class="btn disabled">신청이 접수되어 분양 진행 중이에요</div>';
   else cta='<div class="btn disabled">이미 분양 완료된 책이에요</div>';
   cta += '<a class="btn ghost" href="'+esc(CONFIG.AEHO_URL)+'" target="_blank" rel="noopener">aeho에서 미리보기</a>';
@@ -270,6 +286,48 @@ function closeDetail(){ document.getElementById('overlay').classList.remove('ope
 document.getElementById('modalClose').onclick=closeDetail;
 document.getElementById('overlay').onclick=function(e){ if(e.target.id==='overlay') closeDetail(); };
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeDetail(); });
+
+/* ===== 분양 신청 폼 (우리 디자인 → /api/submit → Notion) ===== */
+function val(id){ var el=document.getElementById(id); return el?(el.value||'').trim():''; }
+function openApply(id){
+  var b = BOOKS.find(function(x){ return x.id===id; }); if(!b) return;
+  document.getElementById('detailBody').innerHTML =
+    '<h2 class="serif" style="font-size:20px;margin-bottom:4px">분양 신청</h2>'
+    + '<p style="font-size:12.5px;color:var(--ink-2);margin-bottom:16px">신청해 주시면 ‘분양 중’으로 바뀌고, 입금 확인 후 책고슴도치가 찾아갈 예정이에요.</p>'
+    + '<div class="mini-book"><div class="mb-cover"></div><div><div class="mb-t">'+esc(b.title)+'</div><div class="mb-s">'+esc(b.genre)+' · '+(b.pins>0?'🚩 플래그 '+b.pins+'개':'흔적 있음')+'</div></div></div>'
+    + '<div class="field"><label>받는 분</label><input id="ap-name" placeholder="이름"></div>'
+    + '<div class="field"><label>연락처</label><input id="ap-phone" placeholder="010-0000-0000" inputmode="tel"></div>'
+    + '<div class="field"><label>배송지 주소</label><input id="ap-addr" placeholder="도로명 주소"></div>'
+    + '<div class="summary"><div class="line"><span>분양가 (배송비 포함)</span><span>'+won(b.price)+'</span></div></div>'
+    + '<div id="ap-err" class="ap-err" style="display:none"></div>'
+    + '<button class="btn" id="ap-submit">신청하기</button>'
+    + '<button class="btn ghost" id="ap-back">← 돌아가기</button>';
+  document.getElementById('ap-back').onclick=function(){ openDetail(id); };
+  document.getElementById('ap-submit').onclick=function(){ submitApply(b); };
+}
+function submitApply(b){
+  var name=val('ap-name'), phone=val('ap-phone'), addr=val('ap-addr');
+  var err=document.getElementById('ap-err');
+  if(!name||!phone||!addr){ err.style.display='block'; err.textContent='이름·연락처·주소를 모두 입력해 주세요.'; return; }
+  var btn=document.getElementById('ap-submit'); btn.disabled=true; btn.textContent='신청 중…';
+  fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:name,phone:phone,address:addr,book:b.title})})
+    .then(function(r){ if(!r.ok) throw new Error('bad'); return r.json(); })
+    .then(function(d){ if(d&&d.ok){ applyDone(b); } else { throw new Error('bad'); } })
+    .catch(function(){ btn.disabled=false; btn.textContent='신청하기'; err.style.display='block';
+      err.innerHTML='지금은 신청 접수가 잠시 어려워요. 잠시 후 다시 시도하시거나 <a href="'+esc(CONFIG.FORM_URL)+'" target="_blank" rel="noopener">기존 폼으로 신청</a>해 주세요.'; });
+}
+function applyDone(b){
+  document.getElementById('detailBody').innerHTML =
+    '<div style="text-align:center;padding:14px 4px">'
+    + '<div style="font-size:40px">🦔</div>'
+    + '<h2 class="serif" style="font-size:20px;margin:10px 0 6px">분양 신청이 완료됐어요</h2>'
+    + '<p style="font-size:13px;color:var(--ink-2);margin-bottom:16px">책고슴도치가 곧 찾아갈 예정입니다! 조금만 기다려 주세요 :)</p>'
+    + '<div class="account"><div class="ac-l">입금 계좌</div><div class="ac-n">카카오뱅크 3333-03-8259251</div><div class="ac-s">예금주 ㅂㅎㅈ · '+won(b.price)+' · 입금자명을 신청자 이름과 같게 해주세요</div></div>'
+    + '<div class="notice" style="text-align:left">책고슴도치는 한 주의 분양을 취합해 <b>주 1회 발송</b>돼요. 발송이 시작되면 입력하신 연락처로 알려드릴게요 🦔</div>'
+    + '<button class="btn ghost" id="ap-close" style="margin-top:14px">다른 책고슴도치 둘러보기</button></div>';
+  document.getElementById('ap-close').onclick=closeDetail;
+}
 
 /* ===== 데이터 로드 (window.BOOK_DATA = Notion 동기화본, 위 인라인) ===== */
 function loadData(){
