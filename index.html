@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦔 책고슴도치 — 읽은 흔적까지 함께 건네는 책</title>
+<meta name="description" content="플래그가 가시처럼 솟은 단 한 권의 책고슴도치를 분양합니다. 제가 머문 페이지를 함께 건네드립니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --key:#234E80; --gold:#E3BC5E;
+    --bg:#FFFFFF; --bg-2:#F2F6FB;
+    --page:#E6ECF3;
+    --ink:#16263D; --ink-2:#566576; --ink-3:#94A1B0;
+    --line:#E2E8F0; --line-2:#D2DBE6;
+    --cover-a:#1F3454; --cover-b:#0B1221;
+    --shadow:0 6px 24px rgba(13,18,33,.10);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Pretendard",-apple-system,sans-serif;background:var(--page);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .serif{font-family:"Noto Serif KR",serif}
+  a{color:inherit}
+
+  .wrap{max-width:1080px;margin:0 auto;background:var(--bg);min-height:100vh}
+  .topnav{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:10}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;letter-spacing:-.3px}
+  .brand .hog{font-size:18px}
+  .topnav nav{display:flex;gap:18px;font-size:13px;color:var(--ink-3)}
+  .topnav nav a{text-decoration:none}
+  .topnav nav a.on{color:var(--ink);font-weight:600}
+
+  .hero{padding:48px 22px 32px;text-align:center}
+  .hero .kicker{font-size:11px;letter-spacing:2.5px;color:var(--ink-3);font-weight:600}
+  .hero h1{font-size:25px;line-height:1.42;margin:14px 0 12px;letter-spacing:-.6px;font-weight:500;word-break:keep-all}
+  .hero p{font-size:14.5px;color:var(--ink-2);max-width:460px;margin:0 auto}
+  .hogline{margin-top:20px;display:flex;justify-content:center;gap:4px;align-items:flex-end;height:26px}
+  .hogline i{width:4px;border-radius:2px 2px 0 0;background:var(--key);opacity:.85}
+
+  .about{max-width:540px;margin:0 auto;padding:4px 22px 30px;text-align:center}
+  .about p{font-size:14px;color:var(--ink-2);line-height:1.9}
+  .about .tag{color:var(--key);font-weight:600}
+  .guide{max-width:600px;margin:38px auto 0;padding:28px 22px 4px;border-top:1px solid var(--line)}
+  .guide h3{font-size:15px;font-weight:600;text-align:center;margin-bottom:16px}
+  .steps{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .steps .s{font-size:12.5px;font-weight:600;color:var(--ink);background:var(--bg-2);border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+  .steps .arr{color:var(--ink-3)}
+  .notice{font-size:12.5px;color:var(--ink-2);background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:13px 16px;line-height:1.8;max-width:560px;margin:0 auto;text-align:center}
+  .filters{display:flex;gap:8px;padding:0 22px;flex-wrap:wrap;align-items:center;margin-bottom:4px}
+  .filters.top{margin-top:6px}
+  .chip{font-size:12.5px;font-weight:600;border:1px solid var(--line-2);background:var(--bg);color:var(--ink-2);
+    padding:7px 14px;border-radius:999px;cursor:pointer;transition:.13s}
+  .chip:hover{border-color:var(--key)}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  #genreFilters{display:flex;gap:8px;flex-wrap:wrap}
+  .sort-wrap{display:flex;align-items:center;gap:6px;margin-left:auto}
+  .sort-label{font-size:12px;color:var(--ink-3)}
+  .sort-select{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink-2);background:#fff;border:1px solid var(--line-2);border-radius:8px;padding:6px 28px 6px 11px;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A1B0' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;padding:22px}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:.18s;position:relative}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+  .cover{position:relative;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--cover-a),var(--cover-b));background-size:cover;background-position:center;overflow:hidden}
+  .flags{position:absolute;top:0;left:0;right:0;display:flex;justify-content:center;gap:3px;z-index:2}
+  .flags i{width:6px;display:block;border-radius:0 0 2px 2px;background:var(--key)}
+  .book{width:64%;height:78%;border-radius:2px 5px 5px 2px;box-shadow:2px 3px 10px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:500;text-align:center;padding:9px;line-height:1.4;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-family:"Noto Serif KR",serif}
+  .badge{position:absolute;top:9px;right:9px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:.2px;display:inline-flex;align-items:center;gap:4px;z-index:2}
+  .badge .d{width:6px;height:6px;border-radius:50%}
+  .badge{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .badge.before .d{background:var(--key)}
+  .badge.ing .d{background:var(--gold)}
+  .badge.done{color:var(--ink-2)}
+  .badge.done .d{background:var(--ink-3)}
+  .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+  .card.is-done .cover{filter:grayscale(1) brightness(1.04)}
+  .cbody{padding:12px 13px 14px}
+  .cgenre{font-size:10.5px;color:var(--ink-3);font-weight:700;letter-spacing:.4px}
+  .ctitle{font-size:14px;font-weight:600;margin:3px 0 7px;letter-spacing:-.2px}
+  .cmeta{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-2)}
+  .pin b{color:var(--key)}
+  .price-tag{font-weight:700}
+
+  .state{padding:60px 22px;text-align:center;color:var(--ink-3);font-size:14px;line-height:1.8}
+
+  .foot{text-align:center;font-size:11.5px;color:#9aa6b4;padding:22px;border-top:1px solid var(--line)}
+  .foot a{color:var(--key);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+
+  .overlay{position:fixed;inset:0;background:rgba(11,18,33,.5);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:var(--bg);border-radius:18px;max-width:760px;width:100%;max-height:90vh;overflow:auto;position:relative}
+  .modal .close{position:absolute;top:14px;right:16px;font-size:22px;line-height:1;color:var(--ink-2);background:none;border:none;cursor:pointer;z-index:3}
+  .detail{padding:26px 24px}
+  .detail-top{display:flex;gap:26px}
+  .dcover{flex:0 0 200px}
+  .dcover .cover{border-radius:10px}
+  .dinfo{flex:1}
+  .dgenre{font-size:11.5px;color:var(--ink-3);font-weight:700;letter-spacing:.5px}
+  .dinfo h2{font-size:23px;margin:7px 0 2px;letter-spacing:-.4px;font-weight:500}
+  .dauthor{font-size:13px;color:var(--ink-2);margin-bottom:16px}
+  .trace{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:16px}
+  .trace .t-h{font-size:12px;font-weight:700;margin-bottom:6px}
+  .trace .t-h .big{font-size:19px;color:var(--key)}
+  .trace p{font-size:12.5px;color:var(--ink-2)}
+  .quote{font-size:13px;line-height:1.75;border-left:2px solid var(--key);padding:2px 0 2px 13px;color:var(--ink-2);margin-bottom:16px}
+  .price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+  .price{font-size:25px;font-weight:700}
+  .price-sub{font-size:12px;color:var(--ink-3)}
+  .stock{font-size:12px;color:var(--ink-2);font-weight:600;margin:8px 0 15px;display:flex;align-items:center;gap:6px}
+  .stock .d{width:7px;height:7px;border-radius:50%;background:var(--key)}
+  .btn{display:block;width:100%;text-align:center;background:var(--ink);color:#fff;border:none;font:inherit;font-weight:700;font-size:14px;padding:14px;border-radius:11px;cursor:pointer;text-decoration:none}
+  .btn.disabled{background:var(--bg-2);color:var(--ink-3);cursor:default;border:1px solid var(--line)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line-2);margin-top:8px}
+  @media(max-width:560px){
+    .detail-top{flex-direction:column}.dcover{width:58%;margin:0 auto}
+    .hero h1{font-size:21px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topnav">
+    <div class="brand"><span class="hog">🦔</span> 책고슴도치</div>
+    <nav><a href="#소개">소개</a><a class="on" href="#둘러보기">둘러보기</a><a href="#안내">안내</a></nav>
+  </div>
+
+  <header class="hero">
+    <div class="kicker">BOOK HEDGEHOG</div>
+    <h1 class="serif">플래그가 가시처럼 솟은<br>단 한 권의 책고슴도치를 분양합니다</h1>
+    <p>제가 머문 페이지를 함께 건네드립니다.</p>
+    <div class="hogline" id="hogline"></div>
+  </header>
+
+  <section class="about" id="소개">
+    <p>책에 플래그를 붙이며 읽고 나면 마치 한 마리의 <span class="tag">고슴도치</span> 같아 보여서 ‘책고슴도치’라 이름 붙였어요. 모든 책은 한 번 이상 읽어 약간의 사용감이 있지만, 플래그를 어디에 붙였는지 살펴보는 재미가 있답니다 :)</p>
+  </section>
+
+  <div class="filters top" id="둘러보기">
+    <span id="genreFilters"></span>
+    <span class="sort-wrap"><span class="sort-label">정렬</span><select id="sortSelect" class="sort-select"></select></span>
+  </div>
+
+  <div id="grid" class="grid"></div>
+  <div id="state" class="state" style="display:none"></div>
+
+  <section class="guide" id="안내">
+    <h3 class="serif">어떻게 분양받나요?</h3>
+    <div class="steps">
+      <span class="s">① 책고슴도치 선택</span><span class="arr">→</span>
+      <span class="s">② 발송 정보 입력</span><span class="arr">→</span>
+      <span class="s">③ 분양가 입금</span>
+    </div>
+    <div class="notice" style="margin-bottom:10px">입금 계좌 · 카카오뱅크 <b style="color:var(--ink)">3333-03-8259251</b> (ㅂㅎㅈ)<br><span style="color:var(--ink-3)">카드·간편결제는 준비 중이라, 지금은 계좌 입금으로 받고 있어요</span></div>
+    <div class="notice">책고슴도치는 한 주의 분양을 취합해 <b>주 1회 발송</b>돼요. 신청하신 시점과 받아보시는 시점 사이 며칠의 갭이 있을 수 있으니 너른 양해 부탁드려요 🦔</div>
+  </section>
+
+  <footer class="foot" id="문의">🦔 책고슴도치 분양 프로젝트 · 읽은 흔적을 건넵니다 · curated by <a href="https://www.aehographer.com/" target="_blank" rel="noopener">aehographer</a>
+    <div style="margin-top:6px;font-size:10.5px;color:#b3bcc8">업데이트 <span id="syncDate"></span></div>
+  </footer>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close" id="modalClose" aria-label="닫기">×</button>
+    <div class="detail" id="detailBody"></div>
+  </div>
+</div>
+
+<script>
+/* === 책 데이터 (Notion 책고슴도치 DB 동기화본 — /책등록 스킬이 이 블록을 갱신) === */
+window.BOOK_SYNCED = "2026-06-14";
+window.BOOK_DATA = [
+  {title:"다 똑같이 살 순 없잖아", author:"김가지", publisher:"다크호스", genre:"에세이", pins:7, status:"분양 전", memo:"플래그 7개 중 여섯이 139~201쪽 중후반에 모여 있어요. 관계와 다툼, '싫어하는 것'을 솔직히 말하는 문장에 오래 머물렀습니다.", review:"", img:"images/not-all-the-same.jpg", price:7000},
+  {title:"낭만적 우정과 무가치한 연애들", author:"라이나 코헨", publisher:"현암사", genre:"에세이", pins:0, status:"분양 전", memo:"", review:"", img:"images/the-other-significant-others.jpg", price:7000}
+];
+</script>
+<script>
+/* ===== 설정 (여기만 바꾸면 됨) ===== */
+/* 책 데이터는 위 window.BOOK_DATA 블록에서 옴 — /책등록 스킬이 Notion 동기화로 갱신 */
+var CONFIG = {
+  FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSe2NXzrIH8LQ2twtROVXcz1ASvDcmpMh87Swgbs6nyD_DNU2w/viewform",
+  AEHO_URL: "https://www.aehographer.com/aeho",
+  PRICE:    7000
+};
+var GENRES = ['전체','에세이','소설','인문사회','기타'];
+var SORTS = ['플래그 많은 순','분양 진행 순'];
+
+/* ===== 상태 ===== */
+var BOOKS = [];
+var activeGenre = '전체', activeSort = '플래그 많은 순';
+
+/* ===== 헬퍼 ===== */
+function stKey(s){ return s==='분양 완료'?'done':(s==='분양 중'?'ing':'before'); }
+function won(n){ return Number(n||CONFIG.PRICE).toLocaleString('ko-KR')+'원'; }
+function flags(n){ n=Math.max(0,Math.min(12,Number(n)||0)); var s=''; for(var i=0;i<n;i++){var h=9+(i%3)*4; s+='<i style="height:'+h+'px"></i>';} return '<div class="flags">'+s+'</div>'; }
+function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function badge(st){
+  if(st==='done') return '<span class="badge done"><span class="d"></span>분양 완료</span>';
+  if(st==='ing')  return '<span class="badge ing"><span class="d"></span>분양 중</span>';
+  return '<span class="badge before"><span class="d"></span>분양 전</span>';
+}
+function priceCell(st,price){ return st==='done'?'—':(st==='ing'?'신청 접수됨':won(price)); }
+function coverHTML(b, big){
+  var bookEl = '<div class="book"'+(big?' style="height:82%"':'')+'>'+esc(b.title)+'</div>';
+  var imgEl = b.img ? '<img class="cover-img" src="'+esc(b.img)+'" alt="" onerror="this.remove()">' : '';
+  return '<div class="cover">'+flags(b.pins)+badge(b.st)+bookEl+imgEl+'</div>';
+}
+
+/* ===== 렌더 ===== */
+function renderHogline(){
+  var s=''; for(var i=0;i<11;i++){ s+='<i style="height:'+(8+(i%2?14:7))+'px"></i>'; }
+  document.getElementById('hogline').innerHTML=s;
+}
+function renderFilters(){
+  document.getElementById('genreFilters').innerHTML = GENRES.map(function(g){
+    return '<span class="chip g '+(g===activeGenre?'on':'')+'" data-g="'+g+'">'+g+'</span>'; }).join('');
+  var sel=document.getElementById('sortSelect');
+  sel.innerHTML = SORTS.map(function(s){ return '<option'+(s===activeSort?' selected':'')+'>'+s+'</option>'; }).join('');
+  sel.onchange = function(){ activeSort=sel.value; renderGrid(); };
+  document.querySelectorAll('.chip.g').forEach(function(c){ c.onclick=function(){ activeGenre=c.dataset.g; renderFilters(); renderGrid(); }; });
+}
+function renderGrid(){
+  var list = BOOKS.filter(function(b){ return activeGenre==='전체' || b.genre===activeGenre; });
+  var order={before:0,ing:1,done:2};
+  if(activeSort==='분양 진행 순') list.sort(function(a,b){ return (order[a.st]-order[b.st]) || (b.pins-a.pins); });
+  else list.sort(function(a,b){ return (b.pins-a.pins); });
+  var grid=document.getElementById('grid'), state=document.getElementById('state');
+  if(!list.length){ grid.innerHTML=''; state.style.display='block'; state.textContent='조건에 맞는 책이 없어요.'; return; }
+  state.style.display='none';
+  grid.innerHTML = list.map(function(b){
+    return '<div class="card '+(b.st==='done'?'is-done':'')+'" data-id="'+b.id+'">'
+      + coverHTML(b,false)
+      + '<div class="cbody"><div class="cgenre">'+esc(b.genre)+'</div><div class="ctitle">'+esc(b.title)+'</div>'
+      + '<div class="cmeta"><span class="pin">'+(b.pins>0?'🚩 플래그 <b>'+b.pins+'</b>':'🚩 흔적 있음')+'</span><span class="price-tag">'+priceCell(b.st,b.price)+'</span></div></div></div>';
+  }).join('');
+  document.querySelectorAll('.card').forEach(function(c){ c.onclick=function(){ openDetail(c.dataset.id); }; });
+}
+
+/* ===== 상세 모달 ===== */
+function openDetail(id){
+  var b = BOOKS.find(function(x){ return x.id===id; });
+  if(!b) return;
+  var cta;
+  if(b.st==='before') cta='<a class="btn" href="'+esc(CONFIG.FORM_URL)+'" target="_blank" rel="noopener">분양 신청하기 →</a>';
+  else if(b.st==='ing') cta='<div class="btn disabled">신청이 접수되어 분양 진행 중이에요</div>';
+  else cta='<div class="btn disabled">이미 분양 완료된 책이에요</div>';
+  cta += '<a class="btn ghost" href="'+esc(CONFIG.AEHO_URL)+'" target="_blank" rel="noopener">aeho에서 미리보기</a>';
+  document.getElementById('detailBody').innerHTML =
+    '<div class="detail-top">'
+    + '<div class="dcover">'+coverHTML(b,true)+'</div>'
+    + '<div class="dinfo">'
+      + '<div class="dgenre">'+esc(b.genre)+'</div>'
+      + '<h2 class="serif">'+esc(b.title)+'</h2>'
+      + '<div class="dauthor">'+(b.author?esc(b.author)+' 지음':'')+(b.publisher?' · '+esc(b.publisher):'')+'</div>'
+      + '<div class="trace"><div class="t-h">'+(b.pins>0?'🚩 이 책에 남은 흔적 <span class="big">'+b.pins+'</span>개':'🚩 읽은 흔적이 담긴 책')+'</div>'
+        + (b.memo?'<p>'+esc(b.memo)+'</p>':'') + '</div>'
+      + (b.review?'<div class="quote serif">"'+esc(b.review)+'"</div>':'')
+      + '<div class="price-row"><span class="price">'+(b.st==='done'?'분양 완료':won(b.price))+'</span>'
+        + (b.st==='done'?'':'<span class="price-sub">배송비 포함 · 분양가</span>')+'</div>'
+      + (b.st==='before'?'<div class="stock"><span class="d"></span> 남은 수량 1부 — 세상에 하나뿐인 책</div>':'<div style="height:10px"></div>')
+      + cta
+    + '</div></div>';
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('modalClose').onclick=closeDetail;
+document.getElementById('overlay').onclick=function(e){ if(e.target.id==='overlay') closeDetail(); };
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeDetail(); });
+
+/* ===== 데이터 로드 (window.BOOK_DATA = Notion 동기화본, 위 인라인) ===== */
+function loadData(){
+  var state=document.getElementById('state');
+  var data = window.BOOK_DATA || [];
+  BOOKS = data.map(function(d,idx){
+    var status=(d.status||'분양 전').toString().trim();
+    return {
+      id:'b'+idx, title:d.title||'', author:d.author||'', publisher:d.publisher||'',
+      genre:(d.genre||'기타').toString().trim(),
+      pins:Number(d.pins)||0, status:status, st:stKey(status),
+      memo:d.memo||'', review:d.review||'', img:(d.img||'').toString().trim(), price:Number(d.price)||CONFIG.PRICE
+    };
+  }).filter(function(b){ return b.title; });
+  if(!BOOKS.length){ state.style.display='block'; state.textContent='아직 등록된 책이 없어요.'; return; }
+  var sd=document.getElementById('syncDate'); if(sd && window.BOOK_SYNCED){ sd.textContent=window.BOOK_SYNCED; }
+  renderFilters(); renderGrid();
+}
+
+renderHogline();
+renderFilters();
+loadData();
+</script>
+</body>
+</html>
